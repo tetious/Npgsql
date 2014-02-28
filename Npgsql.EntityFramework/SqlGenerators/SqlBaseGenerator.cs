@@ -928,11 +928,10 @@ namespace Npgsql.SqlGenerators
 
         public override VisitedExpression Visit(DbApplyExpression expression)
         {
-            // like a join, but used when one of the arguments is a function.
-            // it lets you return the results of a function call given values from the
-            // other table.
-            // sql standard seems to be lateral join
-            throw new NotImplementedException();
+            return new JoinExpression(this.VisitJoinPart(expression.Input, null),
+                expression.ExpressionKind,
+                this.VisitJoinPart(expression.Apply, null),
+                null);
         }
 
         public override VisitedExpression Visit(DbAndExpression expression)

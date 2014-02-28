@@ -642,11 +642,17 @@ namespace Npgsql.SqlGenerators
                 case DbExpressionKind.CrossJoin:
                     sqlText.Append(" CROSS JOIN ");
                     break;
+                case DbExpressionKind.CrossApply:
+                    sqlText.Append(" CROSS JOIN LATERAL ");
+                    break;
+                case DbExpressionKind.OuterApply:
+                    sqlText.Append(" LEFT JOIN LATERAL ");
+                    break;
                 default:
                     throw new NotSupportedException();
             }
             _right.WriteSql(sqlText);
-            if (_joinType != DbExpressionKind.CrossJoin)
+            if (_condition != null && _joinType != DbExpressionKind.CrossJoin)
             {
                 sqlText.Append(" ON ");
                 _condition.WriteSql(sqlText);
